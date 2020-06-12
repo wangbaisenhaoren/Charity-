@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team11.charityserver.mapper.DonationMapper">
+    <resultMap id="BaseResultMap" type="com.team11.charityserver.model.Donation">
+        <id column="donationId" property="donationId" jdbcType="INTEGER"/>
+        <id column="userId" property="userId" jdbcType="INTEGER"/>
+        <id column="projectId" property="projectId" jdbcType="INTEGER"/>
+        <result column="projectName" property="projectName" jdbcType="VARCHAR"/>
+        <result column="money" property="money" jdbcType="DOUBLE"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+    </resultMap>
+
+    <resultMap id="UserDonationInfo" type="com.team11.charityserver.model.Donation" extends="BaseResultMap">
+        <association property="user" javaType="com.team11.charityserver.model.User">
+            <id column="userId" property="userId" jdbcType="INTEGER"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="gender" property="gender" jdbcType="VARCHAR"/>
+            <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+            <result column="mail" property="mail" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="getAllDonations" resultMap="BaseResultMap">
+        select * from donation;
+    </select>
+
+    <select id="getAllDonationsByUserId" resultMap="BaseResultMap">
+        select * from donation where userId=#{userId};
+    </select>
+
+    <select id="getAllDonationsByProjectId" resultMap="BaseResultMap">
+        select * from donation where projectId=#{projectId};
+    </select>
+
+    <select id="getUserDonationsByProjectId" resultMap="UserDonationInfo">
+        SELECT * FROM donation, user where donation.userId = user.userid and projectId = #{projectId};
+    </select>
+
+    <select id="getUserDonationByProjectId" resultMap="BaseResultMap">
+        SELECT * FROM donation where userId=#{userId} and projectId=#{projectId} order by donationId desc limit 1;
+    </select>
+
+    <insert id="insertSelective" parameterType="com.team11.charityserver.model.Donation" >
+        insert into donation
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="donationId != null" >
+                donationId,
+            </if>
+            <if test="userId != null" >
+                userId,
+            </if>
+            <if test="projectId != null" >
+                projectId,
+            </if>
+            <if test="projectName != null">
+                projectName,
+            </if>
+            <if test="money != null" >
+                money,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="donationId != null" >
+                #{donationId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null" >
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="projectName != null" >
+                #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                #{money,jdbcType=DOUBLE},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+</mapper>

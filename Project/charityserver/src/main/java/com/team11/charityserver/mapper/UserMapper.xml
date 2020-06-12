@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team11.charityserver.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.team11.charityserver.model.User">
+        <id column="userId" property="userId" jdbcType="INTEGER"/>
+        <id column="roleId" property="roleId" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="mail" property="mail" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="loadUserByUsername" resultMap="BaseResultMap">
+        select * from user where username=#{username}
+    </select>
+
+    <select id="checkUserExists" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM user WHERE username=#{username})
+    </select>
+
+    <select id="getUserByUserId" resultMap="BaseResultMap">
+        select * from user where userId=#{userId}
+    </select>
+
+    <update id="updateUser" parameterType="com.team11.charityserver.model.User" >
+        update user
+        <set>
+            <if test="roleId != null" >
+                roleId=#{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="username != null" >
+                username=#{username,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null" >
+                gender=#{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password=#{password,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                telephone=#{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mail != null" >
+                mail=#{mail,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where userId = #{userId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertSelective" parameterType="com.team11.charityserver.model.User" >
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                userId,
+            </if>
+            <if test="roleId != null" >
+                roleId,
+            </if>
+            <if test="username != null" >
+                username,
+            </if>
+            <if test="gender != null" >
+                gender,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="telephone != null" >
+                telephone,
+            </if>
+            <if test="mail != null" >
+                mail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null" >
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="username != null" >
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null" >
+                #{gender,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="mail != null" >
+                #{mail,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

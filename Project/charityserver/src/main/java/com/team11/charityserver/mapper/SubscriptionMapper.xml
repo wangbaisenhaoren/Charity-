@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team11.charityserver.mapper.SubscriptionMapper">
+    <resultMap id="BaseResultMap" type="com.team11.charityserver.model.Subscription">
+        <id column="subscriptionId" property="subscriptionId" jdbcType="INTEGER"/>
+        <id column="charityId" property="charityId" jdbcType="INTEGER"/>
+        <id column="userId" property="userId" jdbcType="INTEGER"/>
+        <result column="frequency" property="frequency" jdbcType="VARCHAR"/>
+        <result column="cycle" property="cycle" jdbcType="VARCHAR"/>
+        <result column="money" property="money" jdbcType="VARCHAR"/>
+        <result column="date" property="date" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getSubscriptionsByUserId" resultMap="BaseResultMap">
+        SELECT * FROM subscription where userId=#{userId};
+    </select>
+
+    <update id="updateSubscription" parameterType="com.team11.charityserver.model.Subscription" >
+        update subscription
+        <set>
+            <if test="subscriptionId != null" >
+                subscriptionId=#{subscriptionId,jdbcType=INTEGER},
+            </if>
+            <if test="charityId != null" >
+                charityId=#{charityId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                userId=#{userId,jdbcType=INTEGER},
+            </if>
+            <if test="frequency != null" >
+                frequency=#{frequency,jdbcType=VARCHAR},
+            </if>
+            <if test="cycle != null" >
+                cycle=#{cycle,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                money=#{money,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null" >
+                date=#{date,jdbcType=DATE},
+            </if>
+        </set>
+        where charityId = #{charityId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertSelective" parameterType="com.team11.charityserver.model.Subscription" >
+        insert into subscription
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="subscriptionId != null" >
+                subscriptionId,
+            </if>
+            <if test="charityId != null" >
+                charityId,
+            </if>
+            <if test="userId != null" >
+                userId,
+            </if>
+            <if test="frequency != null">
+                frequency,
+            </if>
+            <if test="cycle != null" >
+                cycle,
+            </if>
+            <if test="money != null" >
+                money,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="subscriptionId != null" >
+                #{subscriptionId,jdbcType=INTEGER},
+            </if>
+            <if test="charityId != null" >
+                #{charityId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="frequency != null" >
+                #{frequency,jdbcType=VARCHAR},
+            </if>
+            <if test="cycle != null" >
+                #{cycle,jdbcType=VARCHAR},
+            </if>
+            <if test="money != null" >
+                #{money,jdbcType=VARCHAR},
+            </if>
+            <if test="date != null" >
+                #{date,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+</mapper>

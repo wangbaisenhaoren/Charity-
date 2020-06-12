@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team11.charityserver.mapper.ProjectMapper">
+    <resultMap id="BaseResultMap" type="com.team11.charityserver.model.Project">
+        <id column="projectId" property="projectId" jdbcType="INTEGER"/>
+        <id column="userId" property="userId" jdbcType="INTEGER"/>
+        <id column="charityId" property="charityId" jdbcType="INTEGER"/>
+        <result column="projectName" property="projectName" jdbcType="VARCHAR"/>
+        <result column="createDate" property="createDate" jdbcType="DATE"/>
+        <result column="expireDate" property="expireDate" jdbcType="DATE"/>
+        <result column="targetMoney" property="targetMoney" jdbcType="DOUBLE"/>
+        <result column="totalMoney" property="totalMoney" jdbcType="DOUBLE"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="link" property="link" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAllProjects" resultMap="BaseResultMap">
+        select * from project;
+    </select>
+
+    <select id="getProjectsByCharityId" resultMap="BaseResultMap">
+        select * from project where charityId=#{charityId};
+    </select>
+
+    <update id="updateProject" parameterType="com.team11.charityserver.model.Project" >
+        update project
+        <set>
+            <if test="userId != null" >
+                userId=#{userId,jdbcType=INTEGER},
+            </if>
+            <if test="charityId != null" >
+                charityId=#{charityId,jdbcType=INTEGER},
+            </if>
+            <if test="projectName != null" >
+                projectName=#{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                createDate=#{createDate,jdbcType=DATE},
+            </if>
+            <if test="expireDate != null" >
+                expireDate=#{expireDate,jdbcType=DATE},
+            </if>
+            <if test="targetMoney != null" >
+                targetMoney=#{targetMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="totalMoney != null" >
+                totalMoney=#{totalMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null" >
+                status=#{status,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                description=#{description,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null" >
+                link=#{link,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where projectId = #{projectId,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertSelective" parameterType="com.team11.charityserver.model.Project" >
+        insert into project
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="projectId != null" >
+                projectId,
+            </if>
+            <if test="userId != null" >
+                userId,
+            </if>
+            <if test="charityId != null" >
+                charityId,
+            </if>
+            <if test="projectName != null" >
+                projectName,
+            </if>
+            <if test="createDate != null" >
+                createDate,
+            </if>
+            <if test="expireDate != null" >
+                expireDate,
+            </if>
+            <if test="targetMoney != null" >
+                targetMoney,
+            </if>
+            <if test="totalMoney != null" >
+                totalMoney,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="description != null" >
+                description,
+            </if>
+            <if test="link != null" >
+                link,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="projectId != null" >
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="charityId != null" >
+                #{charityId,jdbcType=INTEGER},
+            </if>
+            <if test="projectName != null" >
+                #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+                #{createDate,jdbcType=DATE},
+            </if>
+            <if test="expireDate != null" >
+                #{expireDate,jdbcType=DATE},
+            </if>
+            <if test="targetMoney != null" >
+                #{targetMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="totalMoney != null" >
+                #{totalMoney,jdbcType=DOUBLE},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null" >
+                #{link,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

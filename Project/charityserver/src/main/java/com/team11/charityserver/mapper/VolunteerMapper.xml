@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.team11.charityserver.mapper.VolunteerMapper">
+    <resultMap id="BaseResultMap" type="com.team11.charityserver.model.Volunteer">
+        <id column="volunteerId" property="volunteerId" jdbcType="INTEGER"/>
+        <id column="userId" property="userId" jdbcType="INTEGER"/>
+        <id column="charityId" property="charityId" jdbcType="INTEGER"/>
+        <result column="charityName" property="charityName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="UserVolunteerInfo" type="com.team11.charityserver.model.Volunteer" extends="BaseResultMap">
+        <association property="user" javaType="com.team11.charityserver.model.User">
+            <id column="userId" property="userId" jdbcType="INTEGER"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="gender" property="gender" jdbcType="VARCHAR"/>
+            <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+            <result column="mail" property="mail" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="getAllVolunteersByCharityId" resultMap="BaseResultMap">
+        select * from volunteer where charityId=#{charityId};
+    </select>
+
+    <select id="getUserVolunteersByCharityId" resultMap="UserVolunteerInfo">
+        select * from volunteer, user where volunteer.userId = user.userId and charityId=#{charityId};
+    </select>
+
+    <insert id="insertSelective" parameterType="com.team11.charityserver.model.Volunteer" >
+        insert into volunteer
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="volunteerId != null" >
+                volunteerId,
+            </if>
+            <if test="userId != null" >
+                userId,
+            </if>
+            <if test="charityId != null" >
+                charityId,
+            </if>
+            <if test="charityName != null">
+                charityName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="volunteerId != null" >
+                #{volunteerId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="charityId != null" >
+                #{charityId,jdbcType=INTEGER},
+            </if>
+            <if test="charityName != null" >
+                #{charityName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>
